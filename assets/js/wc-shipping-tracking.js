@@ -11,8 +11,8 @@ jQuery( function( $ ) {
 	/**
 	 * WCOrdersTable class.
 	 */
-	function WC_Shipping_Tracking() {
-		$( document )
+	function wcShippingTracking() {
+		$( document.body )
 			.on( 'blur',     '.wc_shipping_tracking_input', this.onInputBlur )
 			.on( 'keyup',    '.wc_shipping_tracking_input', this.onInputKeyUp )
 			.on( 'keypress', '.wc_shipping_tracking_input', this.onInputKeyPress )
@@ -22,7 +22,7 @@ jQuery( function( $ ) {
 	/**
 	 * Cancel an input.
 	 */
-	WC_Shipping_Tracking.prototype.handle_cancel = function( $input ) {
+	wcShippingTracking.prototype.handle_cancel = function( $input ) {
 		if( typeof($input) === 'undefined' )
 			return false;
 
@@ -34,7 +34,7 @@ jQuery( function( $ ) {
 	/**
 	 * Save an input.
 	 */
-	WC_Shipping_Tracking.prototype.handle_save = function( $input ) {
+	wcShippingTracking.prototype.handle_save = function( $input ) {
 		if( typeof( $input ) === 'undefined' ) {
 			return false;
 		}
@@ -64,16 +64,16 @@ jQuery( function( $ ) {
 			 },
 		})
 
-		.success( function( msg ) {
+		.success( function( response ) {
 
 			// Re-enable the input, show value, hide input.
-			$input.val( msg ).data( 'original', msg ).hide();
-			$display.html( msg ).show();
+			$input.val( response ).data( 'original', response ).hide();
+			$display.html( response ).show();
 			$edit.show();
 
 		})
 
-		.done( function( msg ){
+		.done( function( response ) {
 		
 			// Re-enable the input, show value, hide input.
 			$input.prop( 'disabled', false );
@@ -85,48 +85,49 @@ jQuery( function( $ ) {
 	/**
 	 * Blur an input.
 	 */
-	WC_Shipping_Tracking.prototype.onInputBlur = function( e ) {
+	wcShippingTracking.prototype.onInputBlur = function( e ) {
 
 		var $edit = $( e.target ).next( '.edit_wc_shipping_tracking' );
 		var $loader = $edit.next( '.wc_shipping_tracking_loader' );
 
 		if( $.trim( $( e.target ).val() ) != $( e.target ).data('original' ) ) {
-			WC_Shipping_Tracking.prototype.handle_save( $( e.target ) );
+			wcShippingTracking.prototype.handle_save( $( e.target ) );
 		} else {
-			WC_Shipping_Tracking.prototype.handle_cancel( $( e.target ) );
+			wcShippingTracking.prototype.handle_cancel( $( e.target ) );
 		}
 	};
 
 	/**
 	 * Clear on ESC
 	 */
-	WC_Shipping_Tracking.prototype.onInputKeyUp = function( e ) {
-		if( e.which == KEYCODE_ESC ){
-			WC_Shipping_Tracking.prototype.handle_cancel( $( e.target ) );
+	wcShippingTracking.prototype.onInputKeyUp = function( e ) {
+		if( e.which == KEYCODE_ESC ) {
+			wcShippingTracking.prototype.handle_cancel( $( e.target ) );
 		}
 	};
 
 	/**
 	 * Save on enter.
 	 */
-	WC_Shipping_Tracking.prototype.onInputKeyPress = function( e ) {
+	wcShippingTracking.prototype.onInputKeyPress = function( e ) {
 		// Recommended to use e.which, it's normalized across browsers.
-		if( e.which == KEYCODE_ENTER ){
+		if( e.which == KEYCODE_ENTER ) { console.log('hey');
 			e.preventDefault();
-			WC_Shipping_Tracking.prototype.handle_save( $( e.target ) );
+			wcShippingTracking.prototype.handle_save( $( e.target ) );
 		}
 	};
 
 	/**
 	 * Show the input when edit is clicked.
 	 */
-	WC_Shipping_Tracking.prototype.onEditClick = function( e ) {
+	wcShippingTracking.prototype.onEditClick = function( e ) {
+		e.preventDefault();
 		$( e.target ).hide().prev( '.wc_shipping_tracking_input' ).show().focus().prev( '.wc_shipping_tracking_value' ).hide();
 	};
 
 	/*
 	 * Initialize script.
 	 */
-	new WC_Shipping_Tracking();
+	new wcShippingTracking();
 
 });
