@@ -153,10 +153,8 @@ function render_shop_order_columns( $column ) {
 					// Display the tracking info.
 					$value = $the_order->get_meta( '_shipping_tracking_number', true );
 
-					print_r($value);
-
-					$show_input = $value ? 'hide' : 'show';
-					$show_edit  = $value ? 'show' : 'hide';
+					$hide_input = '' !== $value ? 'hide' : '';
+					$hide_edit  = '' !== $value ? '' : 'hide';
 
 					/* translators: %s: shipping method */
 					?>
@@ -168,9 +166,9 @@ function render_shop_order_columns( $column ) {
 					<strong><?php echo esc_html__( 'Tracking Number', 'wc-shipping-tracking' ); ?></strong>
 					<span class="wc_shipping_tracking_value"><?php echo esc_html( $value ); ?></span>
 					
-					<input data-order_id="<?php echo esc_attr( $the_order->get_id() );?>" data-original="<?php echo esc_attr( $value );?>" type="text" name="wc_shipping_tracking" class="wc_shipping_tracking_input <?php echo esc_attr( $show_input ); ?>" value="<?php echo esc_attr( $value );?>" />
+					<input data-order_id="<?php echo esc_attr( $the_order->get_id() );?>" data-original="<?php echo esc_attr( $value );?>" type="text" name="wc_shipping_tracking" class="wc_shipping_tracking_input <?php echo esc_attr( $hide_input ); ?>" value="<?php echo esc_attr( $value );?>" />
 				
-					<button href="#" class="button edit_wc_shipping_tracking <?php echo esc_attr( $show_edit ); ?>"><?php esc_html_e( 'Edit', 'wc-shipping-tracking' ); ?></button>
+					<button href="#" class="button edit_wc_shipping_tracking <?php echo esc_attr( $hide_edit ); ?>"><?php esc_html_e( 'Edit', 'wc-shipping-tracking' ); ?></button>
 					<span class="wc_shipping_tracking_loader"></span>
 				</small></p>
 
@@ -216,8 +214,7 @@ function admin_head_styles() { ?>
 
 	<style type="text/css">';
 		.wc_shipping_tracking { position: relative; } 
-		.wc_shipping_tracking .hide {display: none;} 
-		.wc_shipping_tracking .show {display:inline-block;}
+		.wc_shipping_tracking .hide, .wc_shipping_tracking_input.hide { display: none; } 
 		.wc_shipping_tracking_loader{
 			position: relative;
 			display: none;
@@ -252,7 +249,7 @@ function save_tracking_number() {
 
 	$response = '';
 
-	if ( isset( $_POST['wc_shipping_tracking'] ) && '' !== trim( $_POST['wc_shipping_tracking'] ) && isset( $_POST['order_id'] ) ) {
+	if ( isset( $_POST['wc_shipping_tracking'] ) && isset( $_POST['order_id'] ) ) {
 
 		$value = sanitize_text_field( $_POST['wc_shipping_tracking'] );
 
