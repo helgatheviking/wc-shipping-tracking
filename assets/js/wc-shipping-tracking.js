@@ -66,10 +66,17 @@ jQuery( function( $ ) {
 
 		.success( function( response ) {
 
-			// Re-enable the input, show value, hide input.
-			$input.val( response ).data( 'original', response ).hide();
-			$display.html( response ).show();
-			$edit.show();
+			$input.val( response ).data( 'original', response )
+
+			if ( '' !== response ) {
+				$input.hide();
+				$display.html( response ).show();
+				$edit.show();
+			} else {
+				$input.show();
+				$display.hide();
+				$edit.hide();
+			}
 
 		})
 
@@ -111,7 +118,7 @@ jQuery( function( $ ) {
 	 */
 	wcShippingTracking.prototype.onInputKeyPress = function( e ) {
 		// Recommended to use e.which, it's normalized across browsers.
-		if( e.which == KEYCODE_ENTER ) { console.log('hey');
+		if( e.which == KEYCODE_ENTER ) {
 			e.preventDefault();
 			wcShippingTracking.prototype.handle_save( $( e.target ) );
 		}
